@@ -1,37 +1,24 @@
 import "./App.css";
-import CategoryDesk from "./components/category-desk/category-desk";
-const categories = [
-  {
-    id: 1,
-    title: "Hats",
-    imgUrl: "https://i.ibb.co/cvpntL1/hats.png",
-  },
-  {
-    id: 2,
-    title: "Jackets",
-    imgUrl: "https://i.ibb.co/px2tCc3/jackets.png",
-  },
-  {
-    id: 3,
-    title: "Sneakers",
-    imgUrl: "https://i.ibb.co/0jqHpnp/sneakers.png",
-  },
-  {
-    id: 4,
-    title: "Womens",
-    imgUrl: "https://i.ibb.co/GCCdy8t/womens.png",
-  },
-  {
-    id: 4,
-    title: "Mens",
-    imgUrl: "https://i.ibb.co/R70vBrQ/womens.png",
-  },
-];
-const App = () => {
+import { Routes, Route } from "react-router-dom";
+import Home from "./routes/home/home";
+import Nav from "./routes/NavBar/nav";
+import Authentication from "./routes/authentication/authentication";
+const Shop = () => {
   return (
     <div>
-      <CategoryDesk categories={categories} />
+      <h4>I am Shop</h4>
     </div>
+  );
+};
+const App = () => {
+  return (
+    <Routes>
+      <Route exact path="/" element={<Nav />}>
+        <Route index element={<Home />} />
+        <Route path="shop" element={<Shop />} />
+        <Route path="auth" element={<Authentication />} />
+      </Route>
+    </Routes>
   );
 };
 
