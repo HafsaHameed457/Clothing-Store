@@ -1,44 +1,36 @@
 import React from "react";
-import "./signup.styles.scss";
+
 import { useState } from "react";
 import Button from "../button/button";
 import {
-  createAuthUserwithEmailAndPassword,
+  signInWithGoogle,
   createUserDocFromAuth,
+  signInWithEmailAndPasswordAuth,
 } from "../../utlis/firebase.utlis";
 
 import FormInput from "../form-input/form-input";
-
+import "./signin.styles.scss";
 const defaultValues = {
-  displayName: "",
   email: "",
   password: "",
-  confirmPassword: "",
 };
 
-const SignUp = () => {
+const SignIn = () => {
   const [values, setValues] = useState(defaultValues);
-  const { displayName, email, password, confirmPassword } = values;
+  const { email, password } = values;
+  console.log(values);
   const resetFormFields = () => {
     setValues(defaultValues);
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      alert("passwords don't match");
-      return;
-    }
+    console.log("submit");
     try {
-      const { user } = await createAuthUserwithEmailAndPassword(
-        email,
-        password
-      );
-
-      await createUserDocFromAuth(user, { displayName });
+      const response = await signInWithEmailAndPasswordAuth(email, password);
+      console.log("ee");
+      console.log(response);
       resetFormFields();
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const handlleChange = (e) => {
@@ -47,20 +39,16 @@ const SignUp = () => {
     console.log(name, value);
   };
 
+  const signIn = async () => {
+    const { user } = await signInWithGoogle();
+    await createUserDocFromAuth(user);
+  };
+
   return (
     <div className="sign-up-container">
-      <h2>Dont have an account?</h2>
-      <span>Signup here</span>
+      <h2>I already have an account?</h2>
+      <span>SignIn here</span>
       <form onSubmit={handleSubmit}>
-        <FormInput
-          label="Name"
-          type="text"
-          onChange={handlleChange}
-          required
-          name="displayName"
-          value={displayName}
-        />
-
         <FormInput
           label="Email"
           type="email"
@@ -69,7 +57,7 @@ const SignUp = () => {
           name="email"
           value={email}
         />
-
+        {console.log(email)}
         <FormInput
           label="Password"
           type="password"
@@ -78,20 +66,17 @@ const SignUp = () => {
           name="password"
           value={password}
         />
-
-        <FormInput
-          label="Confirm Password"
-          type="password"
-          onChange={handlleChange}
-          required
-          name="confirmPassword"
-          value={confirmPassword}
-        />
-
-        <Button type="submit">Sign Up</Button>
+        <div className="buttons-container">
+          <Button type="submit" onSubmit={handleSubmit}>
+            Sign In
+          </Button>
+          <Button buttonType="google" onClick={signIn}>
+            Sign In With Google
+          </Button>
+        </div>
       </form>
     </div>
   );
 };
 
-export default SignUp;
+export default SignIn;
