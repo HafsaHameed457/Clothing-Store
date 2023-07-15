@@ -1,6 +1,7 @@
 import React from "react";
 
-import { useState } from "react";
+import { useState, useContext } from "react";
+
 import Button from "../button/button";
 import {
   signInWithGoogle,
@@ -18,6 +19,7 @@ const defaultValues = {
 const SignIn = () => {
   const [values, setValues] = useState(defaultValues);
   const { email, password } = values;
+
   console.log(values);
   const resetFormFields = () => {
     setValues(defaultValues);
@@ -26,9 +28,8 @@ const SignIn = () => {
     e.preventDefault();
     console.log("submit");
     try {
-      const response = await signInWithEmailAndPasswordAuth(email, password);
-      console.log("ee");
-      console.log(response);
+      const { user } = await signInWithEmailAndPasswordAuth(email, password);
+
       resetFormFields();
     } catch (error) {}
   };
@@ -40,8 +41,7 @@ const SignIn = () => {
   };
 
   const signIn = async () => {
-    const { user } = await signInWithGoogle();
-    await createUserDocFromAuth(user);
+    await signInWithGoogle();
   };
 
   return (

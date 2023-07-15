@@ -1,6 +1,6 @@
 import React from "react";
 import "./signup.styles.scss";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import Button from "../button/button";
 import {
   createAuthUserwithEmailAndPassword,
@@ -22,6 +22,7 @@ const SignUp = () => {
   const resetFormFields = () => {
     setValues(defaultValues);
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
