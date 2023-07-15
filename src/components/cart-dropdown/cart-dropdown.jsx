@@ -7,8 +7,10 @@ import React from "react";
 import CartItem from "../cart-item/cart-item";
 
 const CartDropDown = () => {
+  const { setCartOpen } = useContext(CartContext);
   const navigate = useNavigate();
   const goToCheckout = () => {
+    setCartOpen(false);
     navigate("/checkout");
   };
   const { cartItems } = useContext(CartContext);
