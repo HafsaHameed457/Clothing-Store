@@ -1,10 +1,16 @@
 import React from "react";
 import "./categories.styles.scss";
+import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
-const CategoryItem = (props) => {
-  const { id, imgUrl, title } = props;
+const CategoryItem = (category) => {
+  const { id, imgUrl, title, route } = category;
+
+  const Navigate = useNavigate();
+
+  const goToPage = () => Navigate(route);
+
   return (
-    <div className="category" key={id}>
+    <div className="category" key={id} onClick={goToPage}>
       <div
         className="bg-img"
         alt="no img"
