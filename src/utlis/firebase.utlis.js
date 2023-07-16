@@ -1,4 +1,3 @@
-import { on } from "events";
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
@@ -11,7 +10,16 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 
-import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  collection,
+  writeBatch,
+  getDocs,
+  query,
+} from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyA7-p8EkSZfHGsh7g_GLoSXc9HliIthvDM",
@@ -35,6 +43,34 @@ export const signInWithGoogleRedirect = () =>
   signInWithRedirect(auth, provider);
 
 export const db = getFirestore();
+
+export const addCollectionAndDocuments = async (
+  collectionKey,
+  objectsToAdd
+) => {
+  const collectionRef = collection(db, collectionKey);
+  const batch = writeBatch(db);
+
+  objectsToAdd.forEach((object) => {
+    const docRef = doc(collectionRef, object.title.toLowerCase());
+    batch.set(docRef, object);
+  });
+  await batch.commit();
+  console.log("done");
+};
+
+export const getCategoriesandCollection = async (collectionKey) => {
+  const collectionRef = collection(db, "categories");
+  const q = query(collectionRef);
+  const querySnapshot = await getDocs(q);
+  const categories = querySnapshot.docs.reduce((acc, docSnapShot) => {
+    const { title, items } = docSnapShot.data();
+    acc[title.toLowerCase()] = items;
+    return acc;
+  }, {});
+
+  return categories;
+};
 
 export const createUserDocFromAuth = async (userAuth, additionalInfo = {}) => {
   if (!userAuth) return;
