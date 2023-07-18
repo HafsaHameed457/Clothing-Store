@@ -20,7 +20,6 @@ const SignIn = () => {
   const [values, setValues] = useState(defaultValues);
   const { email, password } = values;
 
-  console.log(values);
   const resetFormFields = () => {
     setValues(defaultValues);
   };
