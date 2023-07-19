@@ -1,19 +1,20 @@
 import { ReactComponent as Logo } from "../../assets/crown.svg";
 import React from "react";
-import { Fragment, useContext } from "react";
+import { Fragment } from "react";
 import { Link, Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
 import "./nav.styles.scss";
-import { UserContext } from "../../contexts/user.context";
+
 import { signOutAuth } from "../../utlis/firebase.utlis";
 
 import CartIcon from "../../components/cart-icon/cart-icon";
 import CartDropDown from "../../components/cart-dropdown/cart-dropdown";
-
-import { CartContext } from "../../contexts/cartContext";
-
+import { selectIsCartOpen } from "../../store/cart/cart.selector";
+import { selectCurrentUser } from "../../store/user/user.select";
 const Nav = () => {
-  const { currentUser } = useContext(UserContext);
-  const { isCartOpen } = useContext(CartContext);
+  const currentUser = useSelector(selectCurrentUser);
+  const isCartOpen = useSelector(selectIsCartOpen);
+
   return (
     <Fragment>
       <div className="navigation">
@@ -24,7 +25,7 @@ const Nav = () => {
           <Link className="nav-links" to="/shop">
             Shop
           </Link>
-
+          {console.log(currentUser)}
           {currentUser ? (
             <span className="nav-links" onClick={signOutAuth}>
               Sign Out

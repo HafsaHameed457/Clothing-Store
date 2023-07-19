@@ -25,7 +25,7 @@ const SignIn = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("submit");
+
     try {
       const { user } = await signInWithEmailAndPasswordAuth(email, password);
 
@@ -36,7 +36,6 @@ const SignIn = () => {
   const handlleChange = (e) => {
     const { name, value } = e.target;
     setValues({ ...values, [name]: value });
-    console.log(name, value);
   };
 
   const signIn = async () => {
@@ -56,7 +55,7 @@ const SignIn = () => {
           name="email"
           value={email}
         />
-        {console.log(email)}
+
         <FormInput
           label="Password"
           type="password"
